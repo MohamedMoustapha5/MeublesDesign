@@ -1,0 +1,16 @@
+# Fichiers de configuration sensibles
+.env
+.env.local
+.env.*.local
+
+# Dépendances
+/vendor/
+/node_modules/
+
+# Logs
+*.log
+error_log
+
+# Fichiers système
+.DS_Store
+Thumbs.db
