@@ -32,7 +32,8 @@ $message_success = "";
 // 2. LOGIQUE : Ajout d'un meuble
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ajouter_meuble'])) {
     $nom = htmlspecialchars($_POST['nom']);
-    $prix = $_POST['prix'];
+    $prix_fcfa = $_POST['prix']; // Prix saisi en FCFA
+    $prix = $prix_fcfa / 655.96; // Conversion en Euro pour la BDD
     $description = htmlspecialchars($_POST['description']);
     $stock = $_POST['stock'];
     $categorie = $_POST['categorie'];
@@ -134,7 +135,7 @@ $unread_msg = $stmt_count_msg->fetchColumn();
                         <option value="Bureau">Bureau</option>
                         <option value="Cuisine">Cuisine</option>
                     </select>
-                    <input type="number" step="0.01" name="prix" placeholder="Prix (€)" required>
+                   <input type="number" step="1" name="prix" placeholder="Prix (FCFA)" required>
                     <input type="number" name="stock" placeholder="Stock initial" required>
                 </div>
                 <textarea name="description" placeholder="Description complète..." style="width:100%; height:80px; margin:10px 0; padding:10px; border-radius:6px; border:1px solid #ddd;"></textarea>
@@ -163,7 +164,7 @@ $unread_msg = $stmt_count_msg->fetchColumn();
                 <td><img src="<?php echo $p['image']; ?>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"></td>
                 <td><strong><?php echo htmlspecialchars($p['nom']); ?></strong></td>
                 <td><span class="badge"><?php echo htmlspecialchars($p['categorie']); ?></span></td>
-                <td><?php echo number_format($p['prix'], 2); ?> €</td>
+             <td><?php echo number_format($p['prix'] * 655.96, 0); ?> FCFA</td>
                 <td>
                     <?php if($p['stock'] <= 5): ?>
                         <span style="color: red; font-weight: bold;"><i class="fas fa-exclamation-triangle"></i> <?php echo $p['stock']; ?></span>
@@ -188,71 +189,89 @@ $unread_msg = $stmt_count_msg->fetchColumn();
         </tbody>
     </table>
 </section>
-
-<!-- ===== NOUVELLE SECTION POUR LES COMMANDES ===== -->
+<!-- ===== SECTION GESTION DES COMMANDES ===== -->
 <section class="admin-section" style="margin-top: 30px;">
     <h2><i class="fas fa-shopping-cart"></i> Gestion des Commandes</h2>
     
-    <table>
+    <?php if(isset($_SESSION['admin_success'])): ?>
+        <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <i class="fas fa-check-circle"></i> <?php echo $_SESSION['admin_success']; unset($_SESSION['admin_success']); ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if(isset($_SESSION['admin_error'])): ?>
+        <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <i class="fas fa-exclamation-circle"></i> <?php echo $_SESSION['admin_error']; unset($_SESSION['admin_error']); ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php
+    // Récupérer les commandes avec le nom du client
+    $stmt_orders = $pdo->query("SELECT orders.*, users.nom as client_nom 
+                                FROM orders 
+                                JOIN users ON orders.user_id = users.id 
+                                ORDER BY orders.created_at DESC");
+    $orders = $stmt_orders->fetchAll();
+    ?>
+    
+    <table style="width:100%; border-collapse: collapse;">
         <thead>
-            <tr>
-                <th>N° Commande</th>
-                <th>Client</th>
-                <th>Date</th>
-                <th>Total</th>
-                <th>Statut Actuel</th>
-                <th>Action</th>
+            <tr style="background: var(--primary-color); color: white;">
+                <th style="padding: 12px;">N° Commande</th>
+                <th style="padding: 12px;">Client</th>
+                <th style="padding: 12px;">Date</th>
+                <th style="padding: 12px;">Total (FCFA)</th>
+                <th style="padding: 12px;">Statut</th>
+                <th style="padding: 12px;">Action</th>
             </tr>
         </thead>
         <tbody>
-            <?php
-            // Récupérer les commandes avec le nom du client
-            $stmt_orders = $pdo->query("SELECT orders.*, users.nom as client_nom 
-                                        FROM orders 
-                                        JOIN users ON orders.user_id = users.id 
-                                        ORDER BY orders.created_at DESC");
-            $orders = $stmt_orders->fetchAll();
-            ?>
-            
-            <?php foreach($orders as $c): ?>
-            <tr>
-                <td><strong>#<?php echo $c['id']; ?></strong></td>
-                <td><?php echo htmlspecialchars($c['client_nom']); ?></td>
-                <td><?php echo date('d/m/Y', strtotime($c['created_at'])); ?></td>
-                <td><strong><?php echo number_format($c['total_price'], 2); ?> €</strong></td>
-                <td>
-                    <span style="padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; 
-                          <?php 
-                          if($c['status'] == 'en_attente') echo 'background: #fff3cd; color: #856404;';
-                          elseif($c['status'] == 'Payé') echo 'background: #d4edda; color: #155724;';
-                          elseif($c['status'] == 'expediee') echo 'background: #cce5ff; color: #004085;';
-                          elseif($c['status'] == 'livree') echo 'background: #d1e7dd; color: #0a3622;';
-                          ?>">
-                        <?php 
-                        if($c['status'] == 'en_attente') echo 'En attente';
-                        elseif($c['status'] == 'Payé') echo 'Payé';
-                        elseif($c['status'] == 'expediee') echo 'Expédiée';
-                        elseif($c['status'] == 'livree') echo 'Livrée';
-                        else echo $c['status'];
-                        ?>
-                    </span>
-                </td>
-                <td>
-                    <form method="POST" action="admin_update_order.php" style="display: flex; gap: 5px;">
-                        <input type="hidden" name="order_id" value="<?php echo $c['id']; ?>">
-                        <select name="statut" style="padding: 5px; border-radius: 4px; border: 1px solid #ddd;">
-                            <option value="en_attente" <?php echo $c['status'] == 'en_attente' ? 'selected' : ''; ?>>En attente</option>
-                            <option value="Payé" <?php echo $c['status'] == 'Payé' ? 'selected' : ''; ?>>Payé</option>
-                            <option value="expediee" <?php echo $c['status'] == 'expediee' ? 'selected' : ''; ?>>Expédiée</option>
-                            <option value="livree" <?php echo $c['status'] == 'livree' ? 'selected' : ''; ?>>Livrée</option>
-                        </select>
-                        <button type="submit" style="background: var(--primary-color); color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">
-                            <i class="fas fa-save"></i>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            <?php endforeach; ?>
+            <?php if(count($orders) > 0): ?>
+                <?php foreach($orders as $c): ?>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px;"><strong>#<?php echo $c['id']; ?></strong></td>
+                    <td style="padding: 12px;"><?php echo htmlspecialchars($c['client_nom']); ?></td>
+                    <td style="padding: 12px;"><?php echo date('d/m/Y', strtotime($c['created_at'])); ?></td>
+                    <td style="padding: 12px;"><strong><?php echo number_format($c['total_price'] * 655.96, 0); ?> FCFA</strong></td>
+                    <td style="padding: 12px;">
+                        <span style="padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; 
+                            <?php 
+                            if($c['status'] == 'en_attente') echo 'background: #fff3cd; color: #856404;';
+                            elseif($c['status'] == 'Payé') echo 'background: #d4edda; color: #155724;';
+                            elseif($c['status'] == 'expediee') echo 'background: #cce5ff; color: #004085;';
+                            elseif($c['status'] == 'livree') echo 'background: #d1e7dd; color: #0a3622;';
+                            else echo 'background: #f8f7da; color: #856404;';
+                            ?>">
+                            <?php 
+                            if($c['status'] == 'en_attente') echo 'En attente';
+                            elseif($c['status'] == 'Payé') echo 'Payé';
+                            elseif($c['status'] == 'expediee') echo 'Expédiée';
+                            elseif($c['status'] == 'livree') echo 'Livrée';
+                            else echo 'En attente';
+                            ?>
+                        </span>
+                    </td>
+                    <td style="padding: 12px;">
+                        <form method="POST" action="admin_update_order.php" style="display: flex; gap: 5px;">
+                            <input type="hidden" name="order_id" value="<?php echo $c['id']; ?>">
+                            <select name="statut" style="padding: 5px; border-radius: 4px; border: 1px solid #ddd;">
+                                <option value="en_attente" <?php echo $c['status'] == 'en_attente' ? 'selected' : ''; ?>>En attente</option>
+                                <option value="Payé" <?php echo $c['status'] == 'Payé' ? 'selected' : ''; ?>>Payé</option>
+                                <option value="expediee" <?php echo $c['status'] == 'expediee' ? 'selected' : ''; ?>>Expédiée</option>
+                                <option value="livree" <?php echo $c['status'] == 'livree' ? 'selected' : ''; ?>>Livrée</option>
+                            </select>
+                            <button type="submit" style="background: var(--primary-color); color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">
+                                <i class="fas fa-save"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 40px;">Aucune commande pour le moment</td>
+                </tr>
+            <?php endif; ?>
         </tbody>
     </table>
 </section>

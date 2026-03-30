@@ -88,9 +88,9 @@ if (isset($_GET['remove'])) {
                                 <?php echo htmlspecialchars($p['nom']); ?>
                             </div>
                         </td>
-                        <td><?php echo number_format($p['prix'], 2); ?> €</td>
+                      <td><?php echo number_format($p['prix'] * 655.96, 0); ?> FCFA</td>
                         <td><?php echo $quantite; ?></td>
-                        <td><strong><?php echo number_format($sous_total, 2); ?> €</strong></td>
+                        <td><?php echo number_format($sous_total * 655.96, 0); ?> FCFA</td>
                         <td><a href="panier.php?remove=<?php echo $id; ?>" style="color:red;"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     <?php endforeach; ?>
@@ -98,7 +98,7 @@ if (isset($_GET['remove'])) {
             </table>
 
             <div style="text-align:right; margin-top:20px;">
-                <h3>Total : <?php echo number_format($total_general, 2); ?> €</h3>
+                <h3>Total Général : <?php echo number_format($total_general * 655.96, 0); ?> FCFA</h3>
                 
                 <?php if(isset($_SESSION['user_id'])): ?>
                     <a href="checkout.php" class="btn-valider" style="display: inline-block; width: auto; padding: 15px 40px;">

@@ -41,6 +41,47 @@ $mes_commandes = $stmt->fetchAll();
         .statut-Payé { background: #d4edda; color: #155724; }
         .statut-expediee { background: #cce5ff; color: #004085; }
         .statut-livree { background: #d1e7dd; color: #0a3622; }
+        
+        .btn-telecharger {
+            background: #2ecc71;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-telecharger:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+        .btn-voir {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-voir:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body style="display: block; padding-top: 100px;">
@@ -90,7 +131,7 @@ $mes_commandes = $stmt->fetchAll();
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: center;">
                             <div>
                                 <div style="color: #666; font-size: 13px;">Total</div>
-                                <div style="font-weight: 700; color: var(--primary-color);"><?php echo number_format($c['total_price'], 2); ?> €</div>
+                                <div style="font-weight: 700; color: var(--primary-color);"><?php echo number_format($c['total_price'] * 655.96, 0); ?> FCFA</div>
                             </div>
                             <div>
                                 <div style="color: #666; font-size: 13px;">Articles</div>
@@ -107,6 +148,18 @@ $mes_commandes = $stmt->fetchAll();
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <!-- BOUTONS D'ACTION -->
+                        <div class="action-buttons">
+                            <?php if($c['status'] == 'Payé' || $c['status'] == 'expediee' || $c['status'] == 'livree'): ?>
+                                <a href="generer_recu.php?order_id=<?php echo $c['id']; ?>" class="btn-telecharger" target="_blank">
+                                    <i class="fas fa-download"></i> Télécharger reçu
+                                </a>
+                            <?php endif; ?>
+                            <a href="detail_commande.php?id=<?php echo $c['id']; ?>" class="btn-voir">
+                                <i class="fas fa-eye"></i> Voir détail
+                            </a>
                         </div>
                         
                         <?php if($c['status'] == 'en_attente'): ?>

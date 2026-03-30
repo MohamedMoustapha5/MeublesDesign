@@ -228,12 +228,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST" action="">
             <div class="input-group">
                 <label><i class="fas fa-envelope"></i> Email</label>
-                <input type="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required placeholder="votre@email.com">
+                <input type="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required placeholder="">
             </div>
             
             <div class="input-group">
                 <label><i class="fas fa-lock"></i> Mot de passe</label>
-                <input type="password" name="password" required placeholder="Votre mot de passe">
+                <input type="password" name="password" required placeholder="">
                 <div class="forgot-password">
                     <a href="#"><i class="fas fa-key"></i> Mot de passe oublié ?</a>
                 </div>

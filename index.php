@@ -495,12 +495,7 @@ $products = $stmt->fetchAll();
     </header>
 
     <main>
-        <!-- MESSAGE DE BIENVENUE POUR L'UTILISATEUR CONNECTÉ -->
-        <?php if(isset($_SESSION['user_id'])): ?>
-            <div class="welcome-message">
-                <i class="fas fa-hand-peace"></i> Bonjour, <span><?php echo htmlspecialchars($_SESSION['user_name']); ?></span> ! Ravi de vous revoir sur MeublesDesign
-            </div>
-        <?php endif; ?>
+        
 
         <div class="filter-bar">
             <form method="GET" action="index.php" class="search-form">
@@ -519,7 +514,12 @@ $products = $stmt->fetchAll();
                 ?>
             </div>
         </div>
-
+<!-- MESSAGE DE BIENVENUE POUR L'UTILISATEUR CONNECTÉ -->
+        <?php if(isset($_SESSION['user_id'])): ?>
+            <div class="welcome-message">
+                <i class="fas fa-hand-peace"></i> Bonjour, <span><?php echo htmlspecialchars($_SESSION['user_name']); ?></span> ! Ravi de vous revoir sur MeublesDesign
+            </div>
+        <?php endif; ?>
         <h2 class="section-title">
             <?php echo $cat ? "Collection " . $cat : "Toutes nos créations"; ?>
         </h2>
@@ -542,7 +542,7 @@ $products = $stmt->fetchAll();
                             <h3><?php echo htmlspecialchars($p['nom']); ?></h3>
                             
                             <div class="price-row">
-                                <span class="price"><?php echo number_format($p['prix'], 2); ?> €</span>
+                               <span class="price"><?php echo number_format($p['prix'] * 655.96, 0); ?> FCFA</span>
                                 
                                 <?php if($p['stock'] > 0): ?>
                                     <a href="panier.php?add=<?php echo $p['id']; ?>" class="add-btn">

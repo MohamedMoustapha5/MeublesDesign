@@ -27,7 +27,7 @@ if(!$p) { header("Location: index.php"); exit(); }
         <div style="flex: 1;">
             <span style="color: var(--secondary-color); font-weight: bold;"><?php echo $p['categorie']; ?></span>
             <h2 style="margin: 10px 0;"><?php echo $p['nom']; ?></h2>
-            <p style="font-size: 24px; color: var(--primary-color); font-weight: bold;"><?php echo $p['prix']; ?> €</p>
+           <p style="font-size: 24px; color: var(--primary-color); font-weight: bold;"><?php echo number_format($p['prix'] * 655.96, 0); ?> FCFA</p>
             <p style="color: #666; line-height: 1.6; margin: 20px 0;"><?php echo $p['description']; ?></p>
             <p>Stock disponible : <strong><?php echo $p['stock']; ?></strong></p>
             

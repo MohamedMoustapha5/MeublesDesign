@@ -32,13 +32,13 @@ foreach ($_SESSION['panier'] as $id => $quantite) {
 
     if ($p) {
         $line_items[] = [
-            'price_data' => [
-                'currency' => 'eur',
-                'product_data' => [
-                    'name' => $p['nom'],
-                ],
-                'unit_amount' => intval($p['prix'] * 100),
-            ],
+          'price_data' => [
+    'currency' => 'xaf',
+    'product_data' => [
+        'name' => $p['nom'],
+    ],
+    'unit_amount' => intval($p['prix'] * 655.96),
+],
             'quantity' => $quantite,
         ];
     }
