@@ -25,8 +25,9 @@ $cat_stats = $pdo->query("SELECT categorie, COUNT(*) as nb FROM products GROUP B
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistiques - MeublesDesign</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/Meubless/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }

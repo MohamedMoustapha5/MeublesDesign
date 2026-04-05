@@ -20,8 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contactez-nous - MeublesDesign</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/Meubless/style.css">
 </head>
 <body>
     <header class="navbar">
@@ -40,7 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="email" name="email" placeholder="Votre email" required>
             <input type="text" name="sujet" placeholder="Sujet de votre message" required>
             <textarea name="contenu" placeholder="Comment pouvons-nous vous aider ?" style="width:100%; height:150px; margin:10px 0; padding:10px; border-radius:6px; border:1px solid #ddd;"></textarea>
-            <button type="submit">Envoyer le message</button>
+            <button type="submit" class="btn-send-message">
+                <i class="fas fa-paper-plane"></i> Envoyer le message
+            </button>
         </form>
     </div>
 </body>

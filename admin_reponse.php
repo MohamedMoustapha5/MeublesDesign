@@ -65,8 +65,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['envoyer_reponse'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Répondre au message - Admin</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/Meubless/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .reponse-container { max-width: 800px; margin: 50px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }

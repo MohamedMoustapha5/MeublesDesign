@@ -26,8 +26,9 @@ $mes_commandes = $stmt->fetchAll();
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mes Commandes - MeublesDesign</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes commandes - MeublesDesign</title>
+    <link rel="stylesheet" href="/Meubless/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .statut-badge {

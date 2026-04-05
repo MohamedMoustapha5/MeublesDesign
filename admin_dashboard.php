@@ -71,8 +71,9 @@ $unread_msg = $stmt_count_msg->fetchColumn();
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - MeublesDesign</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/Meubless/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .admin-main { padding-top: 100px; display: flex; flex-direction: column; gap: 40px; }
@@ -141,7 +142,9 @@ $unread_msg = $stmt_count_msg->fetchColumn();
                 <textarea name="description" placeholder="Description complète..." style="width:100%; height:80px; margin:10px 0; padding:10px; border-radius:6px; border:1px solid #ddd;"></textarea>
                 <label>Image du produit :</label>
                 <input type="file" name="image" accept="image/*" required>
-                <button type="submit" name="ajouter_meuble">Mettre en ligne</button>
+                <button type="submit" name="ajouter_meuble" class="btn-add-product">
+                    <i class="fas fa-upload"></i> Mettre en ligne
+                </button>
             </form>
         </section>
 

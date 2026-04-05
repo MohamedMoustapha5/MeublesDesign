@@ -31,8 +31,9 @@ if (isset($_GET['remove'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Panier - MeublesDesign</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/Meubless/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body style="display: block; padding-top: 100px;"> 
@@ -60,6 +61,7 @@ if (isset($_GET['remove'])) {
                 <a href="index.php" class="btn-valider" style="display: inline-block; width: auto;">Continuer mes achats</a>
             </div>
         <?php else: ?>
+            <div class="table-responsive">
             <table style="width:100%; background:white; border-radius:10px; padding:20px; box-shadow:0 5px 15px rgba(0,0,0,0.05);">
                 <thead>
                     <tr style="text-align:left; border-bottom:2px solid #eee;">
@@ -96,6 +98,7 @@ if (isset($_GET['remove'])) {
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            </div>
 
             <div style="text-align:right; margin-top:20px;">
                 <h3>Total Général : <?php echo number_format($total_general * 655.96, 0); ?> FCFA</h3>

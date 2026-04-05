@@ -28,7 +28,7 @@ $products = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MeublesDesign | Boutique Officielle</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/Meubless/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Style pour le message de bienvenue */
@@ -198,9 +198,9 @@ $products = $stmt->fetchAll();
         
         main {
             max-width: 1400px;
-            margin: 120px auto 40px;
+            margin: 150px auto 40px;
             padding: 0 30px;
-            min-height: calc(100vh - 180px);
+            min-height: calc(100vh - 220px);
         }
         
         .filter-bar {
@@ -277,6 +277,13 @@ $products = $stmt->fetchAll();
         .categories a.active {
             background: var(--primary-color);
             color: var(--white);
+        }
+        
+        @media (max-width: 768px) {
+            main {
+                margin-top: 220px;
+                min-height: calc(100vh - 260px);
+            }
         }
         
         .section-title {
